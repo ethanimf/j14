@@ -7,6 +7,8 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * @since 2014-7-19
  * @author ethan
+ *
+ * st from mac
  */
 
 public class MyConputorV2<A,V>/* implements Computable<A, V>*/{

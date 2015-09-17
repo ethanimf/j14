@@ -5,7 +5,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @since 2014-7-16
- * @author v2
+ * @author ethan
+ * @author vin
  */
 
 public class UnsafeState {

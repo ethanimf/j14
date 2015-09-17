@@ -1,7 +1,6 @@
 package ethan.j14.thread;
 
 import java.math.BigInteger;
-import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
@@ -53,7 +52,7 @@ public class MyConputorV4<A,V>/* implements Computable<A, V>*/{
 	}
 
 	public static void main(String[] args) {
-		MyExpensiveFunction expensive = new MyExpensiveFunction();
+		ComputableImpl expensive = new ComputableImpl();
 		MyConputorV4 myversion = new MyConputorV4<String, BigInteger>(expensive);
 		try {
 			for(int i=0;i<10;i++){

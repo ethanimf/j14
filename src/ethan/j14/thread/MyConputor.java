@@ -3,59 +3,59 @@ package ethan.j14.thread;
 import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 import net.jcip.annotations.GuardedBy;
 
 /**
- * @since 2014-7-19
  * @author ethan
+ * @since 2014-7-19
  */
 
-public class MyConputor<A,V>/* implements Computable<A, V>*/{
+public class MyConputor<A, V>/* implements Computable<A, V>*/ {
 
-	@GuardedBy("this")
-	private Map<A, V> cache = new HashMap<A, V>();
-	private IComputable<A, V> c;
-	
-	public  synchronized V  computer(A o) throws InterruptedException{
-		//^^ 问题：其他线程严重被阻塞，伸缩性差
-		V result = cache.get(o);
-		if(result==null){
-			result = c.compute(o);
-			cache.put(o,result);
-		}
-			return result;
-	}
-	
-	public MyConputor(IComputable<A,V> c){
-		this.c = c;
-	}
+    @GuardedBy("this")
+    private Map<A, V> cache = new HashMap<A, V>();
+    private IComputable<A, V> iComputable;
 
-	public static void main(String[] args) {
-		MyExpensiveFunction expensive = new MyExpensiveFunction();
-		MyConputor myversion = new MyConputor<String, BigInteger>(expensive);
-		try {
-			for(int i=0;i<10;i++){
-				System.out.println(myversion.computer("555555"));
-			}
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-	}
-	
+    public synchronized V computer(A value) throws InterruptedException {
+        //^^ 问题：其他线程严重被阻塞，伸缩性差
+        //^^ 缓存对比器
+        V result = cache.get(value);
+        if (result == null) {
+            result = iComputable.compute(value);
+            cache.put(value, result);
+        }
+        return result;
+    }
+
+    public MyConputor(IComputable<A, V> iComputable) {
+        this.iComputable = iComputable;
+    }
+
+    public static void main(String[] args) {
+        ComputableImpl computableImpl = new ComputableImpl();
+        MyConputor conputor = new MyConputor<String, BigInteger>(computableImpl);
+        try {
+            for (int i = 0; i < 10; i++) {
+                System.out.println(conputor.computer("555555"));
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
 
- class MyExpensiveFunction implements IComputable<String,BigInteger>{
+class ComputableImpl implements IComputable<String, BigInteger> {
 
-	@Override
-	public BigInteger compute(String str) throws InterruptedException {
-		Thread.sleep(1000);
-		return new BigInteger(str);
-	}
-	
+    @Override
+    public BigInteger compute(String str) throws InterruptedException {
+        Thread.sleep(1000);
+        return new BigInteger(str);
+    }
+
 }
 
-interface IComputable<A,V>{
-	V compute(A argu) throws InterruptedException;
+interface IComputable<A, V> {
+    V compute(A argu) throws InterruptedException;
 } 

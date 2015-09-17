@@ -47,7 +47,7 @@ public class ThreadSynchronized {
 		}
 //		long end = System.currentTimeMillis();
 //		double spend = (end-start)/1000;
-//		System.out.println("spend:"+spend+"s");
+//		System.out.println("spend:"+spend+"s");z
 	}
 
 	// 内部类的好处：可以访问外部实例对象的变量

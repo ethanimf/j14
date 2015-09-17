@@ -31,7 +31,7 @@ public class MyConputorV2<A,V>/* implements Computable<A, V>*/{
 	}
 
 	public static void main(String[] args) {
-		MyExpensiveFunction expensive = new MyExpensiveFunction();
+		ComputableImpl expensive = new ComputableImpl();
 		MyConputorV2 myversion = new MyConputorV2<String, BigInteger>(expensive);
 		try {
 			for(int i=0;i<10;i++){
